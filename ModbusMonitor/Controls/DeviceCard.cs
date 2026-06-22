@@ -46,7 +46,6 @@ namespace ModbusMonitor.Controls
             {
                 Size = new Size(12, 12),
                 BackColor = Color.Red,
-                CornerRadius = 6,
                 Anchor = AnchorStyles.Right
             };
 

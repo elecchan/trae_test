@@ -55,7 +55,7 @@ namespace ModbusMonitor
             _comboBoxBaudRate = new ComboBox { Width = 120, DropDownStyle = ComboBoxStyle.DropDownList };
             _comboBoxDeviceCount = new ComboBox { Width = 100, DropDownStyle = ComboBoxStyle.DropDownList };
             _buttonConnect = new Button { Text = "连接", Width = 80 };
-            _panelStatus = new Panel { Size = new Size(12, 12), BackColor = Color.Red, CornerRadius = 6 };
+            _panelStatus = new Panel { Size = new Size(12, 12), BackColor = Color.Red };
             _labelStatus = new Label { Text = "串口未打开", AutoSize = true, Margin = new Padding(5, 0, 0, 0) };
 
             _comboBoxBaudRate.Items.AddRange(new object[] { 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 });
