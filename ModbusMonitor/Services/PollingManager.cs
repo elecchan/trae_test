@@ -70,16 +70,31 @@ namespace ModbusMonitor.Services
 
         public void Stop()
         {
+            if (!_isRunning) return;
+
             _isRunning = false;
-            _cts?.Cancel();
-            _cts?.Dispose();
+
+            try
+            {
+                _cts?.Cancel();
+                _pollingTask?.Wait(500);
+            }
+            catch { }
+            finally
+            {
+                _cts?.Dispose();
+                _cts = null;
+                _pollingTask = null;
+            }
         }
 
         private async Task PollAllDevices()
         {
+            CancellationToken token = _cts.Token;
+
             foreach (var device in _devices)
             {
-                if (_cts.IsCancellationRequested) break;
+                if (token.IsCancellationRequested) break;
 
                 DeviceData data;
                 bool success = _modbusService.ReadDeviceData(device.DeviceId, out data);
@@ -101,7 +116,15 @@ namespace ModbusMonitor.Services
                     DataUpdated?.Invoke(device);
                 }
 
-                await Task.Delay(5, _cts.Token);
+                if (token.IsCancellationRequested) break;
+                try
+                {
+                    await Task.Delay(5, token);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
             }
         }
 
