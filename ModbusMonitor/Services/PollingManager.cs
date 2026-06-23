@@ -47,14 +47,16 @@ namespace ModbusMonitor.Services
         {
             if (_isRunning) return;
 
-            _cts = new CancellationTokenSource();
+            var cts = new CancellationTokenSource();
+            _cts = cts;
             _isRunning = true;
 
             _pollingTask = Task.Run(async () =>
             {
-                while (!_cts.IsCancellationRequested)
+                var token = cts.Token;
+                while (!token.IsCancellationRequested)
                 {
-                    await PollAllDevices();
+                    await PollAllDevices(token);
                     
                     int interval = _deviceCount switch
                     {
@@ -63,9 +65,16 @@ namespace ModbusMonitor.Services
                         _ => 1000
                     };
 
-                    await Task.Delay(interval, _cts.Token);
+                    try
+                    {
+                        await Task.Delay(interval, token);
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        break;
+                    }
                 }
-            }, _cts.Token);
+            }, cts.Token);
         }
 
         public void Stop()
@@ -88,10 +97,8 @@ namespace ModbusMonitor.Services
             }
         }
 
-        private async Task PollAllDevices()
+        private async Task PollAllDevices(CancellationToken token)
         {
-            CancellationToken token = _cts.Token;
-
             foreach (var device in _devices)
             {
                 if (token.IsCancellationRequested) break;
