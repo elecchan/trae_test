@@ -23,7 +23,7 @@ namespace ModbusMonitor.Controls
 
         private void InitializeComponent()
         {
-            Size = new Size(180, 120);
+            Size = new Size(200, 120);
             BackColor = Color.White;
             BorderStyle = BorderStyle.FixedSingle;
             Padding = new Padding(8);
@@ -34,19 +34,22 @@ namespace ModbusMonitor.Controls
                 ColumnCount = 2,
                 RowCount = 4
             };
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
 
             _deviceLabel = new Label
             {
                 Text = $"设备 #{DeviceId:D3}",
                 Font = new Font("Microsoft YaHei", 10, FontStyle.Bold),
-                Anchor = AnchorStyles.Left
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                AutoEllipsis = true
             };
 
             _statusPanel = new Panel
             {
                 Size = new Size(12, 12),
-                BackColor = Color.Red,
-                Anchor = AnchorStyles.Right
+                BackColor = Color.Red
             };
 
             _statusLabel = new Label
@@ -54,51 +57,59 @@ namespace ModbusMonitor.Controls
                 Text = "离线",
                 Font = new Font("Microsoft YaHei", 9),
                 ForeColor = Color.Gray,
-                Anchor = AnchorStyles.Right
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleRight,
+                AutoEllipsis = true
             };
+
+            Panel statusPanelContainer = new Panel { Dock = DockStyle.Fill };
+            statusPanelContainer.Paint += (s, e) =>
+            {
+                _statusPanel.Location = new Point(0, (statusPanelContainer.Height - 12) / 2);
+            };
+            statusPanelContainer.Controls.Add(_statusPanel);
+            statusPanelContainer.Controls.Add(_statusLabel);
+            _statusLabel.Location = new Point(18, 0);
+            _statusLabel.Size = new Size(statusPanelContainer.Width - 18, statusPanelContainer.Height);
 
             _workStateLabel = new Label
             {
                 Text = "工作状态: --",
                 Font = new Font("Microsoft YaHei", 9),
-                Anchor = AnchorStyles.Left
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                AutoEllipsis = true
             };
 
             _inputEnergyLabel = new Label
             {
                 Text = "输入电量: -- KWh",
                 Font = new Font("Microsoft YaHei", 9),
-                Anchor = AnchorStyles.Left
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                AutoEllipsis = true
             };
 
             _outputEnergyLabel = new Label
             {
                 Text = "输出电量: -- KWh",
                 Font = new Font("Microsoft YaHei", 9),
-                Anchor = AnchorStyles.Left
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                AutoEllipsis = true
             };
 
             layout.Controls.Add(_deviceLabel, 0, 0);
-
-            Panel statusContainer = new Panel
-            {
-                Dock = DockStyle.Fill,
-                Padding = new Padding(0, 2, 0, 0)
-            };
-            statusContainer.Controls.Add(_statusPanel);
-            _statusPanel.Location = new Point(statusContainer.Width - 16 - 50, 0);
-            statusContainer.Controls.Add(_statusLabel);
-            _statusLabel.Location = new Point(statusContainer.Width - 45, 0);
-            layout.Controls.Add(statusContainer, 1, 0);
+            layout.Controls.Add(statusPanelContainer, 1, 0);
 
             layout.Controls.Add(_workStateLabel, 0, 1);
-            layout.Controls.Add(new Label(), 1, 1);
+            layout.SetColumnSpan(_workStateLabel, 2);
 
             layout.Controls.Add(_inputEnergyLabel, 0, 2);
-            layout.Controls.Add(new Label(), 1, 2);
+            layout.SetColumnSpan(_inputEnergyLabel, 2);
 
             layout.Controls.Add(_outputEnergyLabel, 0, 3);
-            layout.Controls.Add(new Label(), 1, 3);
+            layout.SetColumnSpan(_outputEnergyLabel, 2);
 
             Controls.Add(layout);
         }
