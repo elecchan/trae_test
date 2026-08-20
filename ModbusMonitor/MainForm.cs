@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Windows.Forms;
 using ModbusMonitor.Controls;
@@ -57,6 +59,27 @@ namespace ModbusMonitor
             _buttonConnect = new Button { Text = "连接", Width = 80 };
             _panelStatus = new Panel { Size = new Size(12, 12), BackColor = Color.Red };
             _labelStatus = new Label { Text = "串口未打开", AutoSize = true, Margin = new Padding(5, 0, 0, 0) };
+            LinkLabel _linkHelp = new LinkLabel
+            {
+                Text = "操作指导",
+                AutoSize = true,
+                Margin = new Padding(30, 10, 0, 0),
+                LinkColor = Color.FromArgb(0, 102, 204),
+                ActiveLinkColor = Color.FromArgb(0, 70, 150),
+                VisitedLinkColor = Color.FromArgb(102, 102, 102)
+            };
+            _linkHelp.Click += (s, e) =>
+            {
+                string helpPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "help.html");
+                if (File.Exists(helpPath))
+                {
+                    Process.Start(new ProcessStartInfo(helpPath) { UseShellExecute = true });
+                }
+                else
+                {
+                    MessageBox.Show($"未找到帮助文档：{helpPath}", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
 
             _comboBoxBaudRate.Items.AddRange(new object[] { 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 });
             _comboBoxBaudRate.SelectedIndex = 3;
@@ -78,6 +101,7 @@ namespace ModbusMonitor
             topFlow.Controls.Add(_buttonConnect);
             topFlow.Controls.Add(_panelStatus);
             topFlow.Controls.Add(_labelStatus);
+            topFlow.Controls.Add(_linkHelp);
 
             topPanel.Controls.Add(topFlow);
             mainLayout.Controls.Add(topPanel, 0, 0);
