@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>操作指导 - Modbus设备监控系统</title>
+    <title>操作指导 - 微安老化柜控制系统</title>
     <style>
         body { font-family: "Microsoft YaHei", Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 20px; line-height: 1.8; color: #333; }
         h1 { color: #0066cc; border-bottom: 2px solid #0066cc; padding-bottom: 10px; }
@@ -17,10 +17,13 @@
         th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
         th { background: #f0f0f0; }
         code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: Consolas, monospace; }
+        .flow-step { background: linear-gradient(135deg, #0066cc, #0099ff); color: white; padding: 12px 18px; border-radius: 8px; margin: 8px 0; font-weight: bold; }
+        .flow-arrow { text-align: center; font-size: 24px; color: #0066cc; margin: 4px 0; }
+        .flow-container { background: #e8f4fd; border: 2px dashed #0066cc; border-radius: 10px; padding: 20px; margin: 20px 0; }
     </style>
 </head>
 <body>
-    <h1>Modbus设备监控系统 - 操作指导</h1>
+    <h1>微安老化柜控制系统 - 操作指导</h1>
 
     <h2>一、快速开始</h2>
 
@@ -31,7 +34,7 @@
 
     <div class="step">
         <p><span class="step-num">步骤 2：</span>启动程序</p>
-        <p>双击运行 <code>ModbusMonitor.exe</code>，程序启动后自动扫描可用串口。</p>
+        <p>双击运行 <code>AgingTest.exe</code>，程序启动后自动扫描可用串口。</p>
     </div>
 
     <div class="step">
@@ -81,26 +84,7 @@
         <tr><td>停止</td><td>黑色文字</td><td>设备已停止老化</td></tr>
     </table>
 
-    <h2>四、通信协议</h2>
-
-    <h3>4.1 读命令（功能码 0x03）</h3>
-    <p>读取寄存器 0x02 开始的5个寄存器，包含：</p>
-    <table>
-        <tr><th>寄存器</th><th>长度</th><th>内容</th></tr>
-        <tr><td>0x02</td><td>1 Byte</td><td>工作状态 (0=停止, 1=运行中)</td></tr>
-        <tr><td>0x03-0x04</td><td>2 Bytes</td><td>输入电量 (单位: 0.01 KWh)</td></tr>
-        <tr><td>0x05-0x06</td><td>2 Bytes</td><td>输出电量 (单位: 0.01 KWh)</td></tr>
-    </table>
-
-    <h3>4.2 写命令（功能码 0x10）</h3>
-    <p>写寄存器 0x01，控制老化启停：</p>
-    <table>
-        <tr><th>寄存器</th><th>值</th><th>功能</th></tr>
-        <tr><td>0x01</td><td>0x00</td><td>停止老化</td></tr>
-        <tr><td>0x01</td><td>0x01</td><td>启动老化</td></tr>
-    </table>
-
-    <h2>五、故障排查</h2>
+    <h2>四、故障排查</h2>
 
     <div class="warn">
         <p><strong>⚠️ 串口打不开</strong></p>
@@ -122,7 +106,7 @@
         <p>离线设备恢复通信后，状态会自动恢复为在线，无需重启程序。</p>
     </div>
 
-    <h2>六、系统要求</h2>
+    <h2>五、系统要求</h2>
     <table>
         <tr><th>项目</th><th>要求</th></tr>
         <tr><td>操作系统</td><td>Windows 10 及以上</td></tr>
@@ -130,7 +114,28 @@
         <tr><td>USB转串口</td><td>Windows驱动已安装</td></tr>
     </table>
 
+    <h2>六、设备连接操作</h2>
+
+    <div class="flow-container">
+        <p style="text-align:center; font-size:18px; font-weight:bold; color:#0052a3; margin-top:0;">⚠️ 请严格按照以下步骤操作，严禁跳步！</p>
+
+        <div class="flow-step">步骤 1：储能电源开机</div>
+        <div class="flow-arrow">⬇</div>
+        <div class="flow-step">步骤 2：打开AC输出</div>
+        <div class="flow-arrow">⬇</div>
+        <div class="flow-step">步骤 3：充电口、放电口连接到老化柜</div>
+        <div class="flow-arrow">⬇</div>
+        <div class="flow-step">步骤 4：上位机启动老化</div>
+    </div>
+
+    <div class="warn">
+        <p><strong>⚠️ 重要安全提示</strong></p>
+        <p>1. 必须先开机再接线，严禁带电插拔充电/放电线缆，防止拉弧损坏设备。</p>
+        <p>2. 接线完成后方可在上位机点击"启动老化"按钮。</p>
+        <p>3. 停机时请先停止老化，再关闭AC输出，最后断开线缆。</p>
+    </div>
+
     <hr style="margin: 40px 0; border: none; border-top: 1px solid #eee;">
-    <p style="text-align: center; color: #999; font-size: 12px;">Modbus设备监控系统 V1.0 | 操作指导文档</p>
+    <p style="text-align: center; color: #999; font-size: 12px;">微安老化柜控制系统 V1.0 | 操作指导文档</p>
 </body>
 </html>

@@ -38,7 +38,7 @@ namespace ModbusMonitor
 
         private void InitializeComponent()
         {
-            Text = "Modbus设备监控系统";
+            Text = "微安老化柜控制系统";
             Size = new Size(1024, 768);
             StartPosition = FormStartPosition.CenterScreen;
 
