@@ -165,6 +165,7 @@ namespace ModbusMonitor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            AppConfig.Load(_comboBoxPort, _comboBoxBaudRate, _comboBoxDeviceCount);
             CreateDeviceCards();
         }
 
@@ -172,6 +173,11 @@ namespace ModbusMonitor
         {
             _pollingManager.Stop();
             _modbusService.Close();
+
+            string portName = _comboBoxPort.SelectedItem?.ToString();
+            int baudRate = (int)_comboBoxBaudRate.SelectedItem;
+            int deviceCount = (int)_comboBoxDeviceCount.SelectedItem;
+            AppConfig.Save(portName, baudRate, deviceCount);
         }
 
         private void CreateDeviceCards()
