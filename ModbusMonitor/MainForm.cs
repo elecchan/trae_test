@@ -29,6 +29,9 @@ namespace ModbusMonitor
         private Label _labelOfflineCount;
         private FlowLayoutPanel _flowLayoutPanelDevices;
 
+        private static readonly string ConfigPath = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, "config.ini");
+
         public MainForm()
         {
             _pollingManager = new PollingManager(_modbusService);
@@ -165,7 +168,7 @@ namespace ModbusMonitor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            AppConfig.Load(_comboBoxPort, _comboBoxBaudRate, _comboBoxDeviceCount);
+            LoadConfig();
             CreateDeviceCards();
         }
 
@@ -173,11 +176,64 @@ namespace ModbusMonitor
         {
             _pollingManager.Stop();
             _modbusService.Close();
+            SaveConfig();
+        }
 
-            string portName = _comboBoxPort.SelectedItem?.ToString();
-            int baudRate = (int)_comboBoxBaudRate.SelectedItem;
-            int deviceCount = (int)_comboBoxDeviceCount.SelectedItem;
-            AppConfig.Save(portName, baudRate, deviceCount);
+        private void SaveConfig()
+        {
+            try
+            {
+                string portName = _comboBoxPort.SelectedItem?.ToString();
+                int baudRate = (int)_comboBoxBaudRate.SelectedItem;
+                int deviceCount = (int)_comboBoxDeviceCount.SelectedItem;
+                File.WriteAllLines(ConfigPath, new[]
+                {
+                    $"Port={portName}",
+                    $"BaudRate={baudRate}",
+                    $"DeviceCount={deviceCount}"
+                });
+            }
+            catch
+            {
+            }
+        }
+
+        private void LoadConfig()
+        {
+            if (!File.Exists(ConfigPath))
+                return;
+
+            try
+            {
+                foreach (string line in File.ReadAllLines(ConfigPath))
+                {
+                    string[] parts = line.Split(new[] { '=' }, 2);
+                    if (parts.Length != 2)
+                        continue;
+
+                    string key = parts[0].Trim();
+                    string value = parts[1].Trim();
+
+                    switch (key)
+                    {
+                        case "Port":
+                            if (_comboBoxPort.Items.Contains(value))
+                                _comboBoxPort.SelectedItem = value;
+                            break;
+                        case "BaudRate":
+                            if (int.TryParse(value, out int baud) && _comboBoxBaudRate.Items.Contains(baud))
+                                _comboBoxBaudRate.SelectedItem = baud;
+                            break;
+                        case "DeviceCount":
+                            if (int.TryParse(value, out int count) && _comboBoxDeviceCount.Items.Contains(count))
+                                _comboBoxDeviceCount.SelectedItem = count;
+                            break;
+                    }
+                }
+            }
+            catch
+            {
+            }
         }
 
         private void CreateDeviceCards()
