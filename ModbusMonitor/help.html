@@ -73,15 +73,71 @@
         <tr><td>停止全部老化</td><td>批量停止所有设备的老化模式</td></tr>
     </tbody></table>
 
-    <h2 style="position: relative;">三、状态说明</h2>
+    <h2>三、状态说明</h2>
 
-    <table style="">
-        <tbody><tr><th style="">状态</th><th style="width: 128.865px; min-width: 128.865px;">颜色</th><th>说明</th></tr>
-        <tr style="height: 45.4583px; min-height: 45.4583px;"><td style="height: 45.4583px; min-height: 45.4583px; font-weight: bold;">控制板状态</td><td style="height: 45.4583px; min-height: 45.4583px; width: 128.865px; min-width: 128.865px;"></td><td style="height: 45.4583px; min-height: 45.4583px;"></td></tr><tr><td>控制板在线</td><td style="width: 128.865px; min-width: 128.865px;">🟢 绿色</td><td>设备通信正常，数据实时更新</td></tr>
-        <tr><td>控制板离线</td><td style="width: 128.865px; min-width: 128.865px;">🔴 红色</td><td>连续5次通信失败，可能设备断电或总线故障</td></tr>
-        <tr style="height: 45.4583px; min-height: 45.4583px;"><td style="height: 10.7813px; min-height: 45.4583px; font-weight: bold; width: 162.438px; transform: matrix(1, 0, 0, 1, 0.666672, 0);">老化按键说明</td><td style="height: 34.1146px; min-height: 45.4583px; width: 109.531px; min-width: 128.865px;"></td><td style="height: 21.4479px; min-height: 45.4583px; width: 417.083px; transform: matrix(1, 0, 0, 1, -7.375, 0);"></td></tr><tr><td>启动老化</td><td style="width: 128.865px; min-width: 128.865px;">黑色</td><td>设备已连接，可以开启老化</td></tr>
-        <tr><td>启动老化</td><td style="width: 128.865px; min-width: 128.865px;">灰色</td><td>设备未连接，不可操作</td></tr>
-    <tr style="height: 45.4583px; min-height: 45.4583px;"><td style="height: 45.4583px; min-height: 45.4583px;">老化启动中,点击退出</td><td style="height: 45.4583px; min-height: 45.4583px; width: 128.865px; min-width: 128.865px;">绿色</td><td style="height: 2.66667px; min-height: 45.4583px; width: 420.771px; transform: matrix(1, 0, 0, 1, 1.63538, 0);"></td></tr><tr style="height: 62.1146px; min-height: 62.1146px;"><td style="height: 62.1146px; min-height: 62.1146px;">老化放电中,点击退出</td><td style="height: 62.1146px; min-height: 62.1146px; width: 128.865px; min-width: 128.865px;">绿色</td><td style="height: 25.4479px; min-height: 62.1146px; width: 427.625px; transform: matrix(1, 0, 0, 1, 2.98959, 0);"></td></tr><tr style="height: 78.7812px; min-height: 78.7812px;"><td style="height: 78.7812px; min-height: 78.7812px;">老化充电中,点击退出</td><td style="height: 41.4375px; min-height: 78.7812px; width: 129.438px; min-width: 128.865px; transform: matrix(1, 0, 0, 1, 0.135422, 0);">绿色</td><td style="height: 40.7709px; min-height: 78.7812px; width: 427.625px;"></td></tr><tr style="height: 95.4375px; min-height: 95.4375px;"><td style="height: 95.4375px; min-height: 95.4375px;">老化完成,点击确认</td><td style="height: 95.4375px; min-height: 95.4375px; width: 128.865px; min-width: 128.865px;">绿色</td><td style="height: 95.4375px; min-height: 95.4375px;"></td></tr><tr style="height: 112.104px; min-height: 112.104px;"><td style="height: 112.104px; min-height: 112.104px;">PCS不识别,点击清除</td><td style="height: 112.104px; min-height: 112.104px; width: 128.865px; min-width: 128.865px;">红色</td><td style="height: 112.104px; min-height: 112.104px;">检测不到逆变器无法通信<br>确认逆变器状态灯已亮，控制板485线跟逆变器连接完好</td></tr><tr style="height: 128.76px; min-height: 128.76px;"><td style="height: 128.76px; min-height: 128.76px;">ACIN故障,点击清除</td><td style="height: 128.76px; min-height: 128.76px; width: 128.865px; min-width: 128.865px;">红色</td><td style="height: 128.76px; min-height: 128.76px;">确认机器AC输出是否打开<br>AC输出线是都接对</td></tr><tr style="height: 145.417px; min-height: 145.417px;"><td style="height: 145.417px; min-height: 145.417px;">PCS故障,点击清除</td><td style="height: 145.417px; min-height: 145.417px; width: 128.865px; min-width: 128.865px;">红色</td><td style="height: 145.417px; min-height: 145.417px;">逆变器自身报故障导致退出，重新给逆变器上下电</td></tr></tbody></table>
+    <h3>3.1 正常状态（绿色）</h3>
+    <table>
+        <tr><th style="width:180px;">状态</th><th style="width:80px;">颜色</th><th>说明</th></tr>
+        <tr><td>老化启动中,点击退出</td><td>🟢 绿色</td><td>设备正在启动老化中，请等待</td></tr>
+        <tr><td>老化充电中,点击退出</td><td>🟢 绿色</td><td>设备正在充电</td></tr>
+        <tr><td>老化放电中,点击退出</td><td>🟢 绿色</td><td>设备正在放电</td></tr>
+        <tr><td>老化完成,点击确认</td><td>🟢 绿色</td><td>完成一轮老化：充满电 → 放空 → 充到设定SOC值</td></tr>
+    </table>
+
+    <h3>3.2 故障状态（红色）</h3>
+    <table>
+        <tr><th style="width:180px;">状态</th><th style="width:80px;">颜色</th><th>说明 / 排障方法</th></tr>
+        <tr>
+            <td>PCS不识别,点击清除</td>
+            <td>🔴 红色</td>
+            <td>识别不到逆变器。排障：查看对应机位逆变器指示灯是否正常（默认闪红灯），如果指示灯正常请检查RS485通信线是否连接正常</td>
+        </tr>
+        <tr>
+            <td>ACIN故障,点击清除</td>
+            <td>🔴 红色</td>
+            <td>识别不到设备有AC输出或是AC输出范围不正常。排障：打开设备AC输出或检查AC连接线，万用表测量电压值</td>
+        </tr>
+        <tr>
+            <td>PCS故障,点击清除</td>
+            <td>🔴 红色</td>
+            <td>逆变器报故障。排障：重启逆变器再测试</td>
+        </tr>
+        <tr>
+            <td>R1充电故障,点击清除</td>
+            <td>🔴 红色</td>
+            <td>充电电压异常。排障：检查充电电压</td>
+        </tr>
+        <tr>
+            <td>R1放电故障,点击清除</td>
+            <td>🔴 红色</td>
+            <td>逆变器输出电压异常。排障：检查设备输出电压是否正常，连线是否正常</td>
+        </tr>
+        <tr>
+            <td>R2充电故障,点击清除</td>
+            <td>🔴 红色</td>
+            <td>充电电压异常。排障：检查逆变器充电电压</td>
+        </tr>
+        <tr>
+            <td>R1无充电,点击清除</td>
+            <td>🔴 红色</td>
+            <td>第一轮充不进去电。排障：检查接线以及设备是否满电</td>
+        </tr>
+        <tr>
+            <td>R1无放电,点击清除</td>
+            <td>🔴 红色</td>
+            <td>第一轮放不出电。排障：检查设备AC输出是否正常，接线是否正常</td>
+        </tr>
+        <tr>
+            <td>R2无充电,点击清除</td>
+            <td>🔴 红色</td>
+            <td>第二轮充电充不进去电。排障：检查接线以及设备是否保护导致无法充电，如果保护可以适当降低老化功率</td>
+        </tr>
+        <tr>
+            <td>电池容量异常,点击清除</td>
+            <td>🔴 红色</td>
+            <td>放电放出容量跟设计容量不匹配。排障：确认设计容量、老化效率是否设置正确，如果相差太远可能设备容量有问题或是电池不均衡</td>
+        </tr>
+    </table>
 
     <h2 style="">四、故障排查</h2>
 
